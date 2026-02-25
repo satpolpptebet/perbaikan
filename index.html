@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Satpol PP Tebet - Running Text Spreadsheet</title>
+  <title>Satpol PP Tebet - Running Text</title>
   <style>
     :root {
       --primary-gold: #ffcc00;
@@ -59,7 +59,7 @@
     }
 
     h1 {
-      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      font-size: clamp(1.2rem, 4vw, 2.5rem);
       font-weight: 800;
       color: var(--primary-gold);
       letter-spacing: 4px;
@@ -68,12 +68,11 @@
       text-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    /* Running Text Styles */
     .marquee-container {
       position: fixed;
       bottom: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(15px);
       border-top: 2px solid var(--primary-gold);
       padding: 15px 0;
@@ -86,21 +85,22 @@
       display: inline-block;
       padding-left: 100%;
       animation: marquee 30s linear infinite;
-      font-size: 1.2rem;
-      font-weight: 500;
+      font-size: 1.3rem;
+      font-weight: 600;
       color: #fff;
-      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .marquee-item {
       display: inline-block;
-      padding-right: 50px;
+      padding-right: 60px;
     }
 
     .marquee-item::after {
       content: " • ";
-      margin-left: 50px;
+      margin-left: 60px;
       color: var(--primary-gold);
+      font-weight: bold;
     }
 
     @keyframes marquee {
@@ -110,12 +110,12 @@
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
+      50% { transform: translateY(-15px); }
     }
 
     @keyframes dynamicGlow {
       from { filter: drop-shadow(0 0 10px var(--red-accent)); }
-      to { filter: drop-shadow(0 0 30px var(--primary-gold)); }
+      to { filter: drop-shadow(0 0 25px var(--primary-gold)); }
     }
 
     @keyframes fadeIn {
@@ -125,7 +125,7 @@
 
     .particle {
       position: absolute;
-      background: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       pointer-events: none;
       z-index: 2;
@@ -134,8 +134,7 @@
 
     @keyframes rise {
       from { transform: translateY(110vh); opacity: 0; }
-      10% { opacity: 0.5; }
-      to { transform: translateY(-10vh); opacity: 0; }
+      to { transform: translateY(-10vh); opacity: 0.5; }
     }
   </style>
 </head>
@@ -148,54 +147,55 @@
       <img src="https://lh3.googleusercontent.com/d/1ikvyVwQzoIhXQMfaad6rysg8uEGmRtqm" alt="Logo Satpol PP" class="logo" />
     </div>
     <h1>Satuan Polisi Pamong Praja Kecamatan Tebet</h1>
-    <div style="margin-top: 15px; font-size: 0.9rem; letter-spacing: 2px; opacity: 0.7;">KOTA ADMINISTRASI JAKARTA SELATAN</div>
+    <div style="margin-top: 15px; font-size: 0.9rem; letter-spacing: 2px; opacity: 0.8; font-weight: bold;">KOTA ADMINISTRASI JAKARTA SELATAN</div>
   </div>
 
   <div class="marquee-container">
     <div class="marquee-content" id="runningText">
-      Menghubungkan ke Spreadsheet...
+      Menghubungkan ke sistem...
     </div>
   </div>
 
   <script>
-    /** * KONFIGURASI SPREADSHEET 
-     * URL CSV dari Google Sheets yang telah di-publish ke web
+    /**
+     * Konfigurasi sumber data
+     * Menggunakan URL Google Sheets CSV yang sudah di-publish
      */
     const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGH75EMYAFz-d1-lfdc802_2Nug_gku1NX6o0fm_jbCPcPBS_jDZawl3xIcsJFdnuUSuKmBnehgtN1/pub?gid=0&single=true&output=csv';
 
     const runningTextElement = document.getElementById('runningText');
 
-    // Fungsi mengambil data dari Google Sheets (CSV)
-    async function fetchSpreadsheetData() {
+    async function fetchData() {
       try {
-        // Memanggil URL dengan benar menggunakan tanda kutip
-        const response = await fetch(SPREADSHEET_CSV_URL);
-        
-        if (!response.ok) throw new Error('Gagal mengambil data dari Google Sheets');
+        const response = await fetch(SPREADSHEET_CSV_URL, {
+          cache: 'no-cache'
+        });
+
+        if (!response.ok) throw new Error('Gagal mengambil data');
         
         const data = await response.text();
         
-        // Parsing CSV sederhana
-        // Memisahkan baris, mengambil kolom pertama, dan membersihkan teks
+        // Parsing data CSV
         const rows = data.split('\n').map(row => {
+          // Ambil kolom pertama dan bersihkan tanda kutip
           return row.split(',')[0].replace(/"/g, '').trim();
         });
 
-        // Filter: hapus baris kosong dan baris judul (katakata)
+        // Filter baris kosong dan header
         const messages = rows.filter(row => row.length > 0 && row.toLowerCase() !== 'katakata');
 
         if (messages.length > 0) {
-          updateMarquee(messages);
+          renderMarquee(messages);
         } else {
-          runningTextElement.innerHTML = '<span class="marquee-item">Selamat Datang di Portal Satpol PP Kecamatan Tebet</span>';
+          renderMarquee(["Selamat Datang di Portal Satpol PP Kecamatan Tebet"]);
         }
       } catch (error) {
-        console.error("Gagal mengambil data:", error);
-        runningTextElement.innerText = "Gagal memuat pesan dari Spreadsheet.";
+        console.error("Fetch Error:", error);
+        renderMarquee(["Gagal memuat data dari Spreadsheet. Pastikan dokumen sudah di-publish ke Web."]);
       }
     }
 
-    function updateMarquee(messages) {
+    function renderMarquee(messages) {
       runningTextElement.innerHTML = '';
       messages.forEach(msg => {
         const span = document.createElement('span');
@@ -204,15 +204,15 @@
         runningTextElement.appendChild(span);
       });
       
-      const totalLength = messages.join('').length;
-      // Menyesuaikan durasi (kecepatan) berdasarkan panjang teks
-      const duration = Math.max(20, totalLength / 4);
+      // Hitung durasi animasi berdasarkan panjang karakter agar kecepatan konsisten
+      const totalChars = messages.join('      ').length;
+      const duration = Math.max(20, totalChars / 5);
       runningTextElement.style.animationDuration = `${duration}s`;
     }
 
-    function initParticles() {
-      const particleCount = 40;
-      for (let i = 0; i < particleCount; i++) {
+    function createParticles() {
+      const count = 35;
+      for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         const size = Math.random() * 3 + 1 + 'px';
@@ -220,17 +220,17 @@
         p.style.height = size;
         p.style.left = Math.random() * 100 + 'vw';
         p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        p.style.animationDelay = Math.random() * 8 + 's';
+        p.style.animationDelay = Math.random() * 5 + 's';
         document.body.appendChild(p);
       }
     }
 
     window.onload = () => {
-      initParticles();
-      fetchSpreadsheetData();
+      createParticles();
+      fetchData();
       
-      // Auto-refresh setiap 5 menit (300.000 ms)
-      setInterval(fetchSpreadsheetData, 300000);
+      // Refresh otomatis setiap 5 menit
+      setInterval(fetchData, 300000); 
     };
   </script>
 </body>
