@@ -3,92 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Satpol PP Tebet - Running Text</title>
-   <style>
+  <title>Satpol PP Tebet - Beranda</title>
+  <style>
+    :root {
+      --primary-gold: #ffcc00;
+      --deep-navy: #050a1f;
+      --accent-blue: #0d1b4c;
+      --red-accent: rgba(255, 0, 0, 0.6);
+      --bubble-color: rgba(255, 255, 255, 0.08);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
     body {
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, #0d1b4c 0%, #050a1f 100%);
+      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--accent-blue) 100%);
       overflow: hidden;
       color: white;
+      position: relative;
+    }
+
+    /* Animasi Gelembung (Bubbles) - Diperkecil */
+    .bubbles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -50px;
+      background: var(--bubble-color);
+      border-radius: 50%;
+      box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+      animation: floatUp var(--duration) ease-in infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.2);
+        opacity: 0;
+      }
     }
 
     .container {
       text-align: center;
       position: relative;
-      animation: fadeIn 1.5s ease-in-out;
-      width: 100%;
-      padding: 20px;
+      z-index: 10;
+      animation: fadeIn 1.5s ease-out;
+      margin-bottom: 50px;
     }
 
     .logo {
-      width: 320px;
-      max-width: 80%;
-      animation: float 4s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 20px rgba(255,0,0,0.6));
+      width: 280px;
+      max-width: 60vw;
+      filter: drop-shadow(0 0 20px var(--red-accent));
+      animation: logoFloat 5s ease-in-out infinite, dynamicGlow 4s ease-in-out infinite alternate;
     }
 
     h1 {
-      margin-top: 30px;
-      font-size: 42px;
+      font-size: clamp(1.2rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--primary-gold);
       letter-spacing: 4px;
-      color: #ffcc00;
-      animation: blink 2s infinite;
+      text-transform: uppercase;
+      margin-top: 25px;
+      text-shadow: 0 5px 15px rgba(0,0,0,0.6);
     }
 
-    p {
-      margin-top: 10px;
-      font-size: 16px;
-      opacity: 0.8;
-      letter-spacing: 2px;
+    .sub-title {
+      margin-top: 15px;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      opacity: 0.9;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #fff;
     }
 
-    .running-wrapper {
-      position: absolute;
-      bottom: 40px;
-      left: 0;
+    /* Marquee Styles */
+    .marquee-container {
+      position: fixed;
+      bottom: 0;
       width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
+      border-top: 2px solid var(--primary-gold);
+      padding: 18px 0;
+      z-index: 20;
       overflow: hidden;
       white-space: nowrap;
     }
 
-    .running-text {
+    .marquee-content {
       display: inline-block;
       padding-left: 100%;
-      font-size: 18px;
-      color: #ffffff;
-      animation: marquee 25s linear infinite;
+      animation: marquee 35s linear infinite;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
     }
 
-    /* Animations */
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
-      100% { transform: translateY(0px); }
+    .marquee-item {
+      display: inline-block;
+      padding-right: 70px;
     }
 
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 10px rgba(255,0,0,0.5)); }
-      to { filter: drop-shadow(0 0 30px rgba(255,255,0,0.9)); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .marquee-item::after {
+      content: " • ";
+      margin-left: 70px;
+      color: var(--primary-gold);
+      text-shadow: 0 0 8px var(--primary-gold);
     }
 
     @keyframes marquee {
@@ -96,72 +142,55 @@
       100% { transform: translateX(-100%); }
     }
 
-    .particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: rgba(255,255,255,0.7);
-      border-radius: 50%;
-      animation: moveUp linear infinite;
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
     }
 
-    @keyframes moveUp {
-      from {
-        transform: translateY(100vh);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-10vh);
-        opacity: 0;
-      }
+    @keyframes dynamicGlow {
+      from { filter: drop-shadow(0 0 15px var(--red-accent)); }
+      to { filter: drop-shadow(0 0 35px var(--primary-gold)); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-
-  <div class="bg-overlay"></div>
+  <!-- Background Bubbles -->
+  <div class="bubbles-container" id="bubbles"></div>
 
   <div class="container">
     <div class="logo-box">
       <img src="https://lh3.googleusercontent.com/d/1ikvyVwQzoIhXQMfaad6rysg8uEGmRtqm" alt="Logo Satpol PP" class="logo" />
     </div>
     <h1>Satuan Polisi Pamong Praja Kecamatan Tebet</h1>
-    <div style="margin-top: 15px; font-size: 0.9rem; letter-spacing: 2px; opacity: 0.8; font-weight: bold;">KOTA ADMINISTRASI JAKARTA SELATAN</div>
+    <div class="sub-title">KOTA ADMINISTRASI JAKARTA SELATAN</div>
   </div>
 
   <div class="marquee-container">
     <div class="marquee-content" id="runningText">
-      Menghubungkan ke sistem...
+      Menghubungkan ke sistem informasi...
     </div>
   </div>
 
   <script>
-    /**
-     * Konfigurasi sumber data
-     * Menggunakan URL Google Sheets CSV yang sudah di-publish
-     */
     const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGH75EMYAFz-d1-lfdc802_2Nug_gku1NX6o0fm_jbCPcPBS_jDZawl3xIcsJFdnuUSuKmBnehgtN1/pub?gid=0&single=true&output=csv';
-
     const runningTextElement = document.getElementById('runningText');
 
     async function fetchData() {
       try {
-        const response = await fetch(SPREADSHEET_CSV_URL, {
-          cache: 'no-cache'
-        });
-
+        const response = await fetch(SPREADSHEET_CSV_URL, { cache: 'no-cache' });
         if (!response.ok) throw new Error('Gagal mengambil data');
-        
         const data = await response.text();
         
-        // Parsing data CSV
         const rows = data.split('\n').map(row => {
-          // Ambil kolom pertama dan bersihkan tanda kutip
           return row.split(',')[0].replace(/"/g, '').trim();
         });
 
-        // Filter baris kosong dan header
         const messages = rows.filter(row => row.length > 0 && row.toLowerCase() !== 'katakata');
 
         if (messages.length > 0) {
@@ -171,7 +200,7 @@
         }
       } catch (error) {
         console.error("Fetch Error:", error);
-        renderMarquee(["Gagal memuat data dari Spreadsheet. Pastikan dokumen sudah di-publish ke Web."]);
+        renderMarquee(["Satpol PP Kecamatan Tebet - Melayani dengan Humanis, Tegas, dan Profesional"]);
       }
     }
 
@@ -184,41 +213,41 @@
         runningTextElement.appendChild(span);
       });
       
-      // Hitung durasi animasi berdasarkan panjang karakter agar kecepatan konsisten
       const totalChars = messages.join('      ').length;
-      const duration = Math.max(20, totalChars / 5);
+      const duration = Math.max(25, totalChars / 4);
       runningTextElement.style.animationDuration = `${duration}s`;
     }
 
-    function createParticles() {
-      const count = 35;
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        const size = Math.random() * 3 + 1 + 'px';
-        p.style.width = size;
-        p.style.height = size;
-        p.style.left = Math.random() * 100 + 'vw';
-        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        p.style.animationDelay = Math.random() * 5 + 's';
-        document.body.appendChild(p);
+    function createBubbles() {
+      const container = document.getElementById('bubbles');
+      const bubbleCount = 40; // Menambah jumlah karena ukurannya lebih kecil
+      
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        
+        // Ukuran diubah dari 20-80px menjadi 5-25px agar lebih halus
+        const size = Math.random() * 20 + 5 + 'px';
+        const left = Math.random() * 100 + '%';
+        const duration = Math.random() * 8 + 7 + 's';
+        const delay = Math.random() * 10 + 's';
+        
+        bubble.style.width = size;
+        bubble.style.height = size;
+        bubble.style.left = left;
+        bubble.style.setProperty('--duration', duration);
+        bubble.style.animationDelay = delay;
+        
+        container.appendChild(bubble);
       }
     }
 
     window.onload = () => {
-      createParticles();
+      createBubbles();
       fetchData();
       
-      /**
-       * Refresh Halaman Otomatis
-       * Melakukan reload seluruh halaman setiap 60.000 ms (1 menit)
-       */
-      setTimeout(() => {
-        location.reload();
-      }, 60000);
-
-      // Tetap jalankan refresh data latar belakang setiap 5 menit (opsional jika reload aktif)
       setInterval(fetchData, 300000); 
+      setTimeout(() => location.reload(), 600000);
     };
   </script>
 </body>
