@@ -3,120 +3,235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Under Construction</title>
+  <title>Satpol PP Tebet - Running Text Spreadsheet</title>
   <style>
+    :root {
+      --primary-gold: #ffcc00;
+      --deep-navy: #050a1f;
+      --accent-blue: #0d1b4c;
+      --red-accent: rgba(255, 0, 0, 0.6);
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
     body {
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, #0d1b4c 0%, #050a1f 100%);
+      background: radial-gradient(circle at center, var(--accent-blue) 0%, var(--deep-navy) 100%);
       overflow: hidden;
       color: white;
+    }
+
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 1;
     }
 
     .container {
       text-align: center;
       position: relative;
-      animation: fadeIn 2s ease-in-out;
+      z-index: 10;
+      animation: fadeIn 1.5s ease-out;
+      margin-bottom: 50px;
     }
 
     .logo {
-      width: 320px;
-      max-width: 80%;
-      animation: float 4s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
-      filter: drop-shadow(0 0 20px rgba(255,0,0,0.6));
+      width: 280px;
+      max-width: 65vw;
+      filter: drop-shadow(0 0 15px var(--red-accent));
+      animation: float 5s ease-in-out infinite, dynamicGlow 4s ease-in-out infinite alternate;
     }
 
     h1 {
-      margin-top: 30px;
-      font-size: 42px;
+      font-size: clamp(1.4rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--primary-gold);
       letter-spacing: 4px;
-      color: #ffcc00;
-      animation: blink 2s infinite;
+      text-transform: uppercase;
+      margin-top: 20px;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    p {
-      margin-top: 10px;
-      font-size: 16px;
-      opacity: 0.8;
-      letter-spacing: 2px;
+    /* Running Text Styles */
+    .marquee-container {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(15px);
+      border-top: 2px solid var(--primary-gold);
+      padding: 15px 0;
+      z-index: 20;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
-    /* Floating Animation */
+    .marquee-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 30s linear infinite;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .marquee-item {
+      display: inline-block;
+      padding-right: 50px;
+    }
+
+    .marquee-item::after {
+      content: " • ";
+      margin-left: 50px;
+      color: var(--primary-gold);
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
     @keyframes float {
-      0% { transform: translateY(0px); }
+      0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-20px); }
-      100% { transform: translateY(0px); }
     }
 
-    /* Glow Animation */
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 10px rgba(255,0,0,0.5)); }
-      to { filter: drop-shadow(0 0 30px rgba(255,255,0,0.9)); }
+    @keyframes dynamicGlow {
+      from { filter: drop-shadow(0 0 10px var(--red-accent)); }
+      to { filter: drop-shadow(0 0 30px var(--primary-gold)); }
     }
 
-    /* Fade In */
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Blinking Text */
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    /* Particle Effect */
     .particle {
       position: absolute;
-      width: 6px;
-      height: 6px;
-      background: rgba(255,255,255,0.7);
+      background: rgba(255, 255, 255, 0.4);
       border-radius: 50%;
-      animation: moveUp linear infinite;
+      pointer-events: none;
+      z-index: 2;
+      animation: rise linear infinite;
     }
 
-    @keyframes moveUp {
-      from {
-        transform: translateY(100vh);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(-10vh);
-        opacity: 0;
-      }
+    @keyframes rise {
+      from { transform: translateY(110vh); opacity: 0; }
+      10% { opacity: 0.5; }
+      to { transform: translateY(-10vh); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
+  <div class="bg-overlay"></div>
+
   <div class="container">
-    <!-- Ganti src dengan lokasi file logo Anda -->
-    <img src="https://lh3.googleusercontent.com/d/1ikvyVwQzoIhXQMfaad6rysg8uEGmRtqm" alt="Logo Satpol PP" class="logo" />
-    <h1>UNDER CONSTRUCTION</h1>
-    <p>Website sedang dalam pengembangan</p>
+    <div class="logo-box">
+      <img src="https://lh3.googleusercontent.com/d/1ikvyVwQzoIhXQMfaad6rysg8uEGmRtqm" alt="Logo Satpol PP" class="logo" />
+    </div>
+    <h1>Satuan Polisi Pamong Praja Kecamatan Tebet</h1>
+    <div style="margin-top: 15px; font-size: 0.9rem; letter-spacing: 2px; opacity: 0.7;">KOTA ADMINISTRASI JAKARTA SELATAN</div>
+  </div>
+
+  <div class="marquee-container">
+    <div class="marquee-content" id="runningText">
+      Menghubungkan ke Spreadsheet...
+    </div>
   </div>
 
   <script>
-    // Generate particles
-    for (let i = 0; i < 40; i++) {
-      const particle = document.createElement('div');
-      particle.classList.add('particle');
-      particle.style.left = Math.random() * 100 + 'vw';
-      particle.style.animationDuration = (3 + Math.random() * 5) + 's';
-      particle.style.animationDelay = Math.random() * 5 + 's';
-      document.body.appendChild(particle);
-    }
-  </script>
+    /** * KONFIGURASI SPREADSHEET 
+     * URL CSV dari Google Sheets yang telah di-publish ke web
+     */
+    const SPREADSHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGH75EMYAFz-d1-lfdc802_2Nug_gku1NX6o0fm_jbCPcPBS_jDZawl3xIcsJFdnuUSuKmBnehgtN1/pub?gid=0&single=true&output=csv';
 
+    const runningTextElement = document.getElementById('runningText');
+
+    // Fungsi mengambil data dari Google Sheets (CSV)
+    async function fetchSpreadsheetData() {
+      try {
+        // Memanggil URL dengan benar menggunakan tanda kutip
+        const response = await fetch(SPREADSHEET_CSV_URL);
+        
+        if (!response.ok) throw new Error('Gagal mengambil data dari Google Sheets');
+        
+        const data = await response.text();
+        
+        // Parsing CSV sederhana
+        // Memisahkan baris, mengambil kolom pertama, dan membersihkan teks
+        const rows = data.split('\n').map(row => {
+          return row.split(',')[0].replace(/"/g, '').trim();
+        });
+
+        // Filter: hapus baris kosong dan baris judul (katakata)
+        const messages = rows.filter(row => row.length > 0 && row.toLowerCase() !== 'katakata');
+
+        if (messages.length > 0) {
+          updateMarquee(messages);
+        } else {
+          runningTextElement.innerHTML = '<span class="marquee-item">Selamat Datang di Portal Satpol PP Kecamatan Tebet</span>';
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data:", error);
+        runningTextElement.innerText = "Gagal memuat pesan dari Spreadsheet.";
+      }
+    }
+
+    function updateMarquee(messages) {
+      runningTextElement.innerHTML = '';
+      messages.forEach(msg => {
+        const span = document.createElement('span');
+        span.className = 'marquee-item';
+        span.innerText = msg;
+        runningTextElement.appendChild(span);
+      });
+      
+      const totalLength = messages.join('').length;
+      // Menyesuaikan durasi (kecepatan) berdasarkan panjang teks
+      const duration = Math.max(20, totalLength / 4);
+      runningTextElement.style.animationDuration = `${duration}s`;
+    }
+
+    function initParticles() {
+      const particleCount = 40;
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = Math.random() * 3 + 1 + 'px';
+        p.style.width = size;
+        p.style.height = size;
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        p.style.animationDelay = Math.random() * 8 + 's';
+        document.body.appendChild(p);
+      }
+    }
+
+    window.onload = () => {
+      initParticles();
+      fetchSpreadsheetData();
+      
+      // Auto-refresh setiap 5 menit (300.000 ms)
+      setInterval(fetchSpreadsheetData, 300000);
+    };
+  </script>
 </body>
 </html>
