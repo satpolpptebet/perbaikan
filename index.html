@@ -4,103 +4,91 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Satpol PP Tebet - Running Text</title>
-  <style>
-    :root {
-      --primary-gold: #ffcc00;
-      --deep-navy: #050a1f;
-      --accent-blue: #0d1b4c;
-      --red-accent: rgba(255, 0, 0, 0.6);
-    }
-
+   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
       height: 100vh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, var(--accent-blue) 0%, var(--deep-navy) 100%);
+      background: radial-gradient(circle at center, #0d1b4c 0%, #050a1f 100%);
       overflow: hidden;
       color: white;
-    }
-
-    .bg-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      z-index: 1;
     }
 
     .container {
       text-align: center;
       position: relative;
-      z-index: 10;
-      animation: fadeIn 1.5s ease-out;
-      margin-bottom: 50px;
+      animation: fadeIn 1.5s ease-in-out;
+      width: 100%;
+      padding: 20px;
     }
 
     .logo {
-      width: 280px;
-      max-width: 65vw;
-      filter: drop-shadow(0 0 15px var(--red-accent));
-      animation: float 5s ease-in-out infinite, dynamicGlow 4s ease-in-out infinite alternate;
+      width: 320px;
+      max-width: 80%;
+      animation: float 4s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(255,0,0,0.6));
     }
 
     h1 {
-      font-size: clamp(1.2rem, 4vw, 2.5rem);
-      font-weight: 800;
-      color: var(--primary-gold);
+      margin-top: 30px;
+      font-size: 42px;
       letter-spacing: 4px;
-      text-transform: uppercase;
-      margin-top: 20px;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      color: #ffcc00;
+      animation: blink 2s infinite;
     }
 
-    .marquee-container {
-      position: fixed;
-      bottom: 0;
+    p {
+      margin-top: 10px;
+      font-size: 16px;
+      opacity: 0.8;
+      letter-spacing: 2px;
+    }
+
+    .running-wrapper {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(15px);
-      border-top: 2px solid var(--primary-gold);
-      padding: 15px 0;
-      z-index: 20;
       overflow: hidden;
       white-space: nowrap;
     }
 
-    .marquee-content {
+    .running-text {
       display: inline-block;
       padding-left: 100%;
-      animation: marquee 30s linear infinite;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #fff;
-      text-transform: uppercase;
+      font-size: 18px;
+      color: #ffffff;
+      animation: marquee 25s linear infinite;
     }
 
-    .marquee-item {
-      display: inline-block;
-      padding-right: 60px;
+    /* Animations */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
     }
 
-    .marquee-item::after {
-      content: " • ";
-      margin-left: 60px;
-      color: var(--primary-gold);
-      font-weight: bold;
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px rgba(255,0,0,0.5)); }
+      to { filter: drop-shadow(0 0 30px rgba(255,255,0,0.9)); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
     @keyframes marquee {
@@ -108,37 +96,29 @@
       100% { transform: translateX(-100%); }
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
-    @keyframes dynamicGlow {
-      from { filter: drop-shadow(0 0 10px var(--red-accent)); }
-      to { filter: drop-shadow(0 0 25px var(--primary-gold)); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .particle {
       position: absolute;
-      background: rgba(255, 255, 255, 0.3);
+      width: 6px;
+      height: 6px;
+      background: rgba(255,255,255,0.7);
       border-radius: 50%;
-      pointer-events: none;
-      z-index: 2;
-      animation: rise linear infinite;
+      animation: moveUp linear infinite;
     }
 
-    @keyframes rise {
-      from { transform: translateY(110vh); opacity: 0; }
-      to { transform: translateY(-10vh); opacity: 0.5; }
+    @keyframes moveUp {
+      from {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
+
 
   <div class="bg-overlay"></div>
 
