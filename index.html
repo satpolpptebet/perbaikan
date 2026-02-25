@@ -229,7 +229,15 @@
       createParticles();
       fetchData();
       
-      // Refresh otomatis setiap 5 menit
+      /**
+       * Refresh Halaman Otomatis
+       * Melakukan reload seluruh halaman setiap 60.000 ms (1 menit)
+       */
+      setTimeout(() => {
+        location.reload();
+      }, 60000);
+
+      // Tetap jalankan refresh data latar belakang setiap 5 menit (opsional jika reload aktif)
       setInterval(fetchData, 300000); 
     };
   </script>
