@@ -137,6 +137,18 @@
       text-shadow: 0 0 8px var(--primary-gold);
     }
 
+    /* Hidden YouTube Container */
+    .video-background {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
@@ -159,6 +171,20 @@
   </style>
 </head>
 <body>
+
+  <!-- Background Audio (Hidden YouTube Live) -->
+  <div class="video-background">
+    <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/HCEqojdt4sw?autoplay=1&mute=0&loop=1&playlist=HCEqojdt4sw" 
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" 
+      allowfullscreen>
+    </iframe>
+  </div>
 
   <!-- Background Bubbles -->
   <div class="bubbles-container" id="bubbles"></div>
@@ -220,13 +246,12 @@
 
     function createBubbles() {
       const container = document.getElementById('bubbles');
-      const bubbleCount = 40; // Menambah jumlah karena ukurannya lebih kecil
+      const bubbleCount = 40; 
       
       for (let i = 0; i < bubbleCount; i++) {
         const bubble = document.createElement('div');
         bubble.className = 'bubble';
         
-        // Ukuran diubah dari 20-80px menjadi 5-25px agar lebih halus
         const size = Math.random() * 20 + 5 + 'px';
         const left = Math.random() * 100 + '%';
         const duration = Math.random() * 8 + 7 + 's';
