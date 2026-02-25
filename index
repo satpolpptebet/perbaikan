@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Under Construction</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #0d1b4c 0%, #050a1f 100%);
+      overflow: hidden;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .logo {
+      width: 320px;
+      max-width: 80%;
+      animation: float 4s ease-in-out infinite, glow 3s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(255,0,0,0.6));
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 42px;
+      letter-spacing: 4px;
+      color: #ffcc00;
+      animation: blink 2s infinite;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 16px;
+      opacity: 0.8;
+      letter-spacing: 2px;
+    }
+
+    /* Floating Animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Glow Animation */
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px rgba(255,0,0,0.5)); }
+      to { filter: drop-shadow(0 0 30px rgba(255,255,0,0.9)); }
+    }
+
+    /* Fade In */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Blinking Text */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Particle Effect */
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      animation: moveUp linear infinite;
+    }
+
+    @keyframes moveUp {
+      from {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Ganti src dengan lokasi file logo Anda -->
+    <img src="https://lh3.googleusercontent.com/d/1ikvyVwQzoIhXQMfaad6rysg8uEGmRtqm" alt="Logo Satpol PP" class="logo" />
+    <h1>UNDER CONSTRUCTION</h1>
+    <p>Website sedang dalam pengembangan</p>
+  </div>
+
+  <script>
+    // Generate particles
+    for (let i = 0; i < 40; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.left = Math.random() * 100 + 'vw';
+      particle.style.animationDuration = (3 + Math.random() * 5) + 's';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      document.body.appendChild(particle);
+    }
+  </script>
+
+</body>
+</html>
